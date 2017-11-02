@@ -14,9 +14,10 @@
     function setup() {
     createCanvas(800,600) // sets the canvas size to that
     scale = 1;
-    r = random(255)  // declares a variable for random background colors
-    g = random(255)  // declares a variable for random background colors
-    b = random(255)  // declares a variable for random background colors
+    // declares a variable for random background colors
+    r = random(255) 
+    g = random(255)
+    b = random(255) 
     }
 
     function draw() {
@@ -26,9 +27,10 @@
     }
 
     function keyPressed() {
-    r = random(255) // displays a random background color everytime a key is pressed
-    g = random(255) // displays a random background color everytime a key is pressed
-    b = random(255) // displays a random background color everytime a key is pressed
+    // displays a random background color everytime a key is pressed
+    r = random(255)
+    g = random(255)
+    b = random(255)
     }
     
     function mousePressed() {
