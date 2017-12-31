@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Pong</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+    <script>
+        var ballX;
+        var ballY;
+        var ballSpeedX = 0;
+        var ballSpeedY = 0;
+        var paddleHeight = 30;
+        var r = 255;
+        var g = 255;
+        var b = 255;
+        var score = 0;
+        var paddleWidth = 200;
+
+        function setup() {
+            createCanvas(800,600);
+            noCursor();
+            //The ball starts off at a random place at the top of the canvas
+            ballX = random(width);
+            ballY = random(height/2);
+        }
+
+        function draw() {
+            background(171,251,255);  //Background changes to a light shade of blue
+            
+            moveBall();
+            checkCollide();
+            drawPaddle();
+            drawBall();
+            
+            textSize(50);  //Sets the text size to 50
+            fill(random,random,random); //Sets the text color to random colors
+            text("Score: " + score,20,55) /* Displays a text that says "Score: " 
+            along with whatever the score is everytime it changes */
+        }
+
+        function moveBall() {
+            //Makes the ball move 
+            ballX = ballX + ballSpeedX;
+            ballY = ballY + ballSpeedY;
+
+            console.log("ballSpeedX: " + ballSpeedX + 
+                        ", ballSpeedY: " + ballSpeedY);
+        }
+
+        function checkCollide() {
+            //Makes the ball bounce
+            if (ballX < 0 || ballX > width) {
+                ballSpeedX = ballSpeedX * -1;
+            }
+            if (ballY < 0) {
+                ballSpeedY = ballSpeedY * -1;
+            }
+            if (ballY > height - paddleHeight) {
+                if (ballX > mouseX && ballX < mouseX + 200) {
+                    ballSpeedY = ballSpeedY * -1;
+                    
+                  paddleWidth -= 7  /*The width of the paddle decreases 7 pixels, 
+                  everytime it comes in contact with the ball */
+                  
+                  r = random(255)  //r is set to a random shade of red
+                  g = random(255)  //g is set to a random shade of green
+                  b = random(255)  //b is set to a random shade of blue
+                  
+                  score=score+1  /*Everytime the ball comes in contact with the 
+                  paddle, the score icreases by 1 */
+                    
+                }  
+                else {
+                    textSize(50);  // Sets the size of the text to 50
+                    text("GAME OVER!", width / 2, height / 2);  /*Displays the text 
+                    "GAME OVER!" if the ball touches the bottom of the canvas*/
+                    noLoop();
+                }
+            }
+        }
+
+        function drawBall() {
+            noStroke();
+            fill(r,g,b)  //The color of the ball is random
+            ellipse(ballX, ballY, 20, 20); /*Draws the ball depending on wherever 
+            the ball goes to on the canvas, with the radius of 20*/
+        }
+
+        function drawPaddle() {
+            //The paddle is set to have a thickness of 4 pixels, at the edges on every side
+            strokeWeight(4);
+            
+            rect(mouseX, height - paddleHeight - 4, paddleWidth, paddleHeight);  
+            /* The paddle is redrawn every time, based on wherever mouseX is, always on the 
+            same y-coordinate, the width of it changing based on the collison with the ball, 
+            and the height of the paddle staying the same every time  */
+        }
+      
+      function keyPressed() {  //When a certain key is pressed
+        if(keyCode==32){  //The "certain key" in this case, is the space bar
+          //The games begins, as the speed of the ball isn't 0 anymore
+          ballSpeedX=5
+          ballSpeedY=5
+        }
+      }
+    </script>
+</head>
+
+<body>
+<form><input TYPE="button" onClick="history.go(0)" value="Reset"></form>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/syedaa4390/p5js/blob/gh-pages/pong-project.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+
+</html>
