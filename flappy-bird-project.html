@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>p5js Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+
+    <script>
+        var bird;
+        var tunnels = []
+        var score=0;
+
+        function setup() {
+            createCanvas(450,450);
+            bird=new Bird();
+        }
+
+        function draw(){
+        background(0);
+        bird.show();
+        bird.fall();
+        noStroke();
+        
+        textAlign(LEFT);
+        fill("blue");  //Sets text color to blue
+        textSize(30);  //Sets text size to 30
+        text("SCORE : " + score, 5, 25);  //Text is displayed as a new score is gained
+        
+        fill(79,255,137);  //The color of the tunnels are set to a certain shade of green
+        if(frameCount % 35 == 0){  
+          tunnels.push(new Tunnel());  //New pairs of tunnels are added as other pairs disappear off the canvas
+          }
+        for(i = 0; i < tunnels.length; i++){
+        tunnels[i].move();
+        tunnels[i].display();
+      }
+          checkCollide();
+        }
+      
+       //As the space bar is pressed, the command in whcih is given for the bird to go up, is done
+       function keyPressed(){
+            if (keyCode == 32){
+                bird.up();
+            }
+        }
+      
+      function Tunnel(){
+        this.x = width;  //The x-value of the tunnels are set to the width
+        this.y = random(height-100/2, height-180);  /*The y-value of the tunnels are set to the a random height 
+        that;s shown on the top and bottom of the canvas, as it leaves some same (at least 100) for the bird to pass */
+        this.speed = -3;  //The speed is set so that the tunnels move to the  left of the canvas, at a contanst speed of 3
+        this.display = function() {
+          noStroke();  
+          }
+        
+        //Various funtions run as it was prviously declared
+        this.move = function(){
+          this.x += this.speed;
+          if(this.x >= width){
+            this.x = 0;
+          }
+          
+        }
+        this.display = function(){
+          rect(this.x,this.y,35,height - this.y);
+          rect(this.x,0,35,height-this.y);
+        }
+       }     
+        function Bird(){
+            this.birdX=100;  //The x-xalue of the bird is set to 100
+            this.birdY=height/2  //The y-value of the bird is set to halfway between the canvas
+            
+            this.gravity=0.1;
+            this.upForce=-4;
+            this.velocity=0;
+            
+           //draws the bird
+           this.show=function(){
+                clear();
+                fill(0);
+                ellipse(this.birdX,this.birdY,25,25);
+            }
+            
+            //As the space bar is pressed, the bird moves up
+            this.up=function(){
+                this.velocity += this.upForce;    
+            }
+            
+            //when the mouse is not pressed the bird drops to the bottom
+            this.fall=function() { 
+                this.velocity+=this.gravity;
+                this.birdY+= this.velocity;
+                
+                //the bird doesn't disappear off the canvas
+                if(this.birdY>height){
+                    this.birdY=height
+                    this.velocity=0;
+                }
+                if(this.birdY<0){
+                    this.birdY=height
+                    this.velocity=0;
+                }
+            }
+            }
+      
+      function checkCollide(){
+        for(var i = 0; i < tunnels.length; i++){
+          // As the bird passes each set of tunnels, the score will increase  
+          if(bird.birdX > tunnels[i].x && bird.birdX < tunnels[i].x + 35  ){
+            score++;  
+            
+          // If the bird comes in contact with the tunnels, everything will stop, and the screen will display "Game Over"
+            if(bird.birdY > tunnels[i].y || bird.birdY < (height - tunnels[i].y) ){
+              fill("red");
+              textAlign(CENTER);  
+              textSize(50);
+              text("GAME OVER!!!!!", width/2, height/2);
+              noLoop();
+           }
+          }
+        }
+      }
+            
+        
+    </script>
+</head>
+
+<body>
+<form><input TYPE="button" onClick="history.go(0)" value="Reset"></form>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/syedaa4390/p5js/blob/master/flappy-bird-project.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+
+</html>
